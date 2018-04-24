@@ -1,0 +1,15 @@
+.container {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+}
+.link{
+  width:100px;
+  height: 32px;
+  background-color:#6FCE53;
+  color: #fff;
+  border-radius: 6px;
+  margin-left: 10px;
+}
