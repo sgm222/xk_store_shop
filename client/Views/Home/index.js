@@ -4,26 +4,19 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 import Button from 'Components/Button';
-import FeedBox from 'Components/FeedBox';
-import SideBar from 'Components/SideBar';
 import logo from 'SharedStyles/logg.jpg';
 import appLayout from 'SharedStyles/appLayout.css';
 import * as styles from './styles.css';
 
 import $ from './jquery.min.js';
 import scripts from './lunbo.js';
-import { getGoods } from '../Goods/actions';
-import { getCart, handleradd } from '../Cart/actions';
+import { handleradd } from '../Cart/actions';
 
 class Home extends Component {
   componentDidMount() {
     const {
-      getGoods,
-      getCart,
       handleradd,
     } = this.props;
-    getGoods();
-    getCart();
   }
   
   render() {
@@ -211,8 +204,6 @@ export default connect(
       cart: state.cart
     }},
     (dispatch) => {return {
-      getGoods: () => { dispatch(getGoods()); },
-      getCart: () => { dispatch(getCart()); },
       handleradd: (goodsId, shopId) => {dispatch(handleradd(goodsId, shopId))},
     }}
 )(Home);

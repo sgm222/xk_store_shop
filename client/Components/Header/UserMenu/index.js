@@ -37,7 +37,7 @@ class UserMenu extends Component {
     let showAvatar = "none";
     if (props) {
         if (props.fileName) {
-            avatarPath = "build/uploadFiles/" + props.fileName;
+            avatarPath = "/build/uploadFiles/" + props.fileName;
             showAvatar = "inline";
         }
     }

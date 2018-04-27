@@ -9,7 +9,7 @@ import { getGoodsById } from '../Goods/actions';
 
 class UserProfile extends Component {
   componentDidMount() {
-    const { getGoodsById } = this.props;
+    const { getGoodsById, handleradd } = this.props;
     const { goodsId } = this.props.params;
     getGoodsById(goodsId);
   }

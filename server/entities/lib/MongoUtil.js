@@ -1,6 +1,3 @@
-/**
- * Created by shenjj on 2017/2/9.
- */
 let config = require('config-lite');
 let mongoose = require('mongoose');
 
@@ -89,6 +86,30 @@ class MongoUtil {
             Model = mongoose.model(modelName, modelSchema);
         }
         return Model.find(keymap);
+        // return model.save();   //promise 返回model
+    }
+    deleteModelByKeyMap(modelName, schema, keymap) {
+        let modelSchema = mongoose.Schema(schema);
+
+        let Model;
+        try {
+            Model = mongoose.model(modelName);                //判断Model是不是已存在
+        } catch (error) {
+            Model = mongoose.model(modelName, modelSchema);
+        }
+        return Model.remove(keymap);
+        // return model.save();   //promise 返回model
+    }
+    deleteAll(modelName, schema) {
+        let modelSchema = mongoose.Schema(schema);
+
+        let Model;
+        try {
+            Model = mongoose.model(modelName);                //判断Model是不是已存在
+        } catch (error) {
+            Model = mongoose.model(modelName, modelSchema);
+        }
+        return Model.remove({});
         // return model.save();   //promise 返回model
     }
 }

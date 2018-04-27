@@ -40,6 +40,14 @@ class CartModel {
         let mongoUtil = new MongoUtil();
         return mongoUtil.findModel(modelName, cartSechma);
     }
+    deleteCartById(userId, goodsId) {
+        let mongoUtil = new MongoUtil();
+        return mongoUtil.deleteModelByKeyMap(modelName, cartSechma, {userId: userId, goodsId: goodsId});
+    }
+    deleteAll(userId) {
+        let mongoUtil = new MongoUtil();
+        return mongoUtil.deleteModelByKeyMap(modelName, cartSechma, {userId: userId});
+    }
 }
 
 module.exports = CartModel;

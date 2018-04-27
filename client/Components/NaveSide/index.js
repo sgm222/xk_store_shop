@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import * as styles from './styles';
 import appLayout from 'SharedStyles/appLayout.css';
-
+import { Link } from 'react-router';
 class NaveSide extends Component {
   render() {
     const {cart} = this.props;
@@ -12,90 +12,35 @@ class NaveSide extends Component {
         <div id="sidebar">
           <div id="wrap">
             <div id="prof" className="item ">
-              <a href="# ">
+              <Link to="/Owner">
                 <span className="setting "></span>
-              </a>
-              <div className="ibar_login_box status_login ">
-                <div className="avatar_box ">
-                  <p className="avatar_imgbox "><img src="/build/images/no-img_mid_.jpg " /></p>
-                  <ul className="user_info ">
-                    <li>用户名：sl1903</li>
-                    <li>级&nbsp;别：普通会员</li>
-                  </ul>
-                </div>
-                <div className="login_btnbox ">
-                  <a href="# " className="login_order ">我的订单</a>
-                  <a href="# " className="login_favorite ">我的收藏</a>
-                </div>
-                <i className="icon_arrow_white "></i>
+              </Link>
+            </div>
+            <Link to="/Cart">
+              <div id="shopCart " className="item ">
+                  <span className="message "></span>
+                <p style={{marginTop:'40px'}}>购物车</p>
+                <p className="cart_num ">{cart.addIds.length}</p>
               </div>
-
-            </div>
-            <div id="shopCart " className="item ">
-              <a href="# ">
-                <span className="message "></span>
-              </a>
-              <p>
-                购物车
-              </p>
-              <p className="cart_num ">{cart.addIds.length}</p>
-            </div>
-            <div id="asset " className="item ">
-              <a href="# ">
-                <span className="view "></span>
-              </a>
-              <div className="mp_tooltip ">
-                我的资产
-                <i className="icon_arrow_right_black "></i>
+            </Link>
+            
+            <Link to="/myOrders">
+              <div id="brand " className="item ">
+                  <span className="wdsc "><img src="/build/images/wdsc.png " /></span>
+                  <p style={{marginTop:'40px'}}>订单</p>
               </div>
-            </div>
-
-            <div id="foot " className="item ">
-              <a href="# ">
-                <span className="zuji "></span>
-              </a>
-              <div className="mp_tooltip ">
-                我的足迹
-                <i className="icon_arrow_right_black "></i>
-              </div>
-            </div>
-
-            <div id="brand " className="item ">
-              <a href="#">
-                <span className="wdsc "><img src="/build/images/wdsc.png " /></span>
-              </a>
-              <div className="mp_tooltip ">
-                我的收藏
-                <i className="icon_arrow_right_black "></i>
-              </div>
-            </div>
-
-            <div id="broadcast " className="item ">
-              <a href="# ">
-                <span className="chongzhi "><img src="/build/images/chongzhi.png " /></span>
-              </a>
-              <div className="mp_tooltip ">
-                我要充值
-                <i className="icon_arrow_right_black "></i>
-              </div>
-            </div>
-
+            </Link>
+            
             <div className="quick_toggle ">
               <li className="qtitem ">
-                <a href="# "><span className="kfzx "></span></a>
-                <div className="mp_tooltip ">客服中心<i className="icon_arrow_right_black "></i></div>
-              </li>
-              {/* <!--二维码 --> */}
-              <li className="qtitem ">
-                <a href="#none "><span className="mpbtn_qrcode "></span></a>
+                <Link to="/"><span className="mpbtn_qrcode "></span></Link>
                 <div className="mp_qrcode " style={{display:"none"} }><img src="../images/weixin_code_145.png " /><i className="icon_arrow_white "></i></div>
               </li>
+
               <li className="qtitem ">
                 <a href="#top " className="return_top "><span className="top "></span></a>
               </li>
             </div>
-
-            {/* <!--回到顶部 --> */}
             <div id="quick_links_pop " className="quick_links_pop hide "></div>
 
           </div>

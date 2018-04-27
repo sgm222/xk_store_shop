@@ -3,6 +3,8 @@ import {
   FETCHING_GOODS_FAILURE,
   FETCHING_GOODSDETAIL_SUCCESS,
   FETCHING_GOODSDETAIL_FAILURE,
+  FETCHING_CARTGOODS_SUCCESS,
+  FETCHING_CARTGOODS_FAILURE,
 } from './constants';
 import {
   fetchGoods,
@@ -47,26 +49,23 @@ export const getGoodsById = (goodsId) => {
       )
     }
 };
-export const getCartGoods = (goodsId) => {
-    return (dispatch, getState) => {
-      fetchGoodsById(goodsId).then(
-          (response) => {
-              return response.data;
-          }
-      ).then(
-          (json) => {
-              if (json.length !== 0) {
-                return json;
-              } else {
+export const getGoodsId = (id) => {
+    fetchGoodsById(id).then(
+        (response) => {
+            return response.data;
+        }
+    ).then(
+        (json) => {
+            if (json.length !== 0) {
+               return json;
+            } else {
                 return null;
-              }
-          }
-      ).catch(
-        //dispatch({ type: FETCHING_USER_FAILURE })
-      )
-    }
+            }
+        }
+    ).catch(
+        console.error('error')
+    )
 };
-
 export const fetchSignIn = (body) => {
       let url = "/api/user/SignIn";
       fetch(url, {
@@ -82,7 +81,6 @@ export const fetchSignIn = (body) => {
           }
       ).then(
           (json) => {
-              console.log(JSON.stringify(json));
               if (json.result) {
                   if (json.result.redirect) {
                       //window.location = json.result.redirect;

@@ -9,13 +9,25 @@ import appLayout from 'SharedStyles/appLayout.css';
 import styles from './styles.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { getUser } from '../Views/SignIn/actions';
+import { getCart } from '../Views/Cart/actions';
+import { getGoods } from '../Views/Goods/actions';
+import { getAddress } from '../Views/Address/actions';
+import { getOrder } from '../Views/Order/actions';
 injectTapEventPlugin();
 class AppContainer extends Component {
   componentDidMount() {
     const {
       getUser,
+      getCart,
+      getGoods,
+      getAddress,
+      getOrder
     } = this.props;
     getUser();
+    getGoods();
+    getCart();
+    getAddress();
+    getOrder();
   }
 
   render() {
@@ -37,6 +49,10 @@ class AppContainer extends Component {
     }; },
     (dispatch) => { return {
       getUser: () => { dispatch(getUser()); },
+      getCart: () => { dispatch(getCart()); },
+      getGoods: () => { dispatch(getGoods()); },
+      getAddress: () => { dispatch(getAddress()); },
+      getOrder: () => { dispatch(getOrder()); },
     }; }
   )(AppContainer);
 
