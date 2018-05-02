@@ -1,6 +1,7 @@
 import {
     FETCHING_ORDER_SUCCESS,
     FETCHING_ORDER_FAILURE,
+    DEL_ORDER
   } from './constants';
   
   const initialState = {
@@ -23,7 +24,11 @@ import {
           fetchingOrder: false,
           error: 'Unable to fetch ',
         });
-  
+      case DEL_ORDER:
+        var id = state.order.indexOf(action.payload)
+        state.order.splice(id, 1)
+        return state
+
       default:
         return state;
     }

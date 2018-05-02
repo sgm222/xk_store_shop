@@ -58,11 +58,7 @@ export const handlerdel = (goodsId, shopId) => {
                 return response.json();
             }
         ).then(
-            (json) => {
-                if(json.result.success) {
-                    dispatch({ type: DEL_COUNT, payload: goodsId });
-                }
-            }
+            newFunction(dispatch, goodsId)
         ).catch(
             (ex) => {
                 console.error('parsing failed', ex);
@@ -138,4 +134,12 @@ export const clearCart = () => {
     }
 };
 
+
+function newFunction(dispatch, goodsId) {
+    return (json) => {
+        if (json.result.success) {
+            dispatch({ type: DEL_COUNT, payload: goodsId });
+        }
+    };
+}
   

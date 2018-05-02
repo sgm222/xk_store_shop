@@ -27,13 +27,11 @@ export const getAddress = () => {
 export const getAddressById = (id) => {
         fetchAddressById(id).then(
             (response) => {
-                console.log(response.data);
                 return response.data;
             }
         ).then(
             (json) => {
                 if (json.length !== 0) {
-                   console.log(json);
                    return json;
                 } else {
                     return null;

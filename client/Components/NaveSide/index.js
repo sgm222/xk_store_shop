@@ -27,7 +27,7 @@ class NaveSide extends Component {
             <Link to="/myOrders">
               <div id="brand " className="item ">
                   <span className="wdsc "><img src="/build/images/wdsc.png " /></span>
-                  <p style={{marginTop:'40px'}}>订单</p>
+                  <p>订单</p>
               </div>
             </Link>
             

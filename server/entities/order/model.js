@@ -42,6 +42,10 @@ class OrderModel {
       let mongoUtil = new MongoUtil();
       return mongoUtil.findModelAndUpdateByKeyMap(modelName, orderSechma, id, data);
     }
+    deleteOrderById(_id) {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.deleteModelByKeyMap(modelName, orderSechma, {_id: _id});
+  }
 }
 
 module.exports = OrderModel;

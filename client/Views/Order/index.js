@@ -18,36 +18,48 @@ class myOrders extends Component {
     super(props);
   }
   componentDidMount() {
-    const {
-        getOrder
-    } = this.props;
     addressTF = this.refs.addressTF;
   }
-  turnAddress(id) {
-    const {  address } = this.props;
-    console.log(this.props);
-    if(addressTF){
-        console.log(addressTF);
-        address.address.map(item => {
-            if(id === item._id) {
-                addressTF.innerText = item.name; 
-            }
-        })
+  getLocalTime = (nS) =>{
+    return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
+  } 
+  changeStatus = (status) => {
+    switch (status) {
+      case 0:
+        return '待发货'
+      case 1:
+        return '待收货'
+      case 2:
+        return '待评价'
+      default:
+        return '';
     }
-  }
+  };
   render() {
     const { order, goods, address, cart} = this.props;
-    console.log(this.props);
-    let ordergoods = []; 
-    let selecte = [];
-    let sum = 0;
     if(order.fetchingOrder) {
       return (
+        <div style={{
+            width:'1100px',
+            margin:'30px auto'
+          }}>
         <MuiThemeProvider>
-        <List  style={{backgroundColor:'#eee',borderRadius:'2px',width:'600px',float:'left'}}>
+        <List  style={{
+            backgroundColor:'#eee',
+            borderRadius:'2px',
+            width:'600px',
+            margin:'50px auto',
+            padding:'10px 30px'
+        }}>
             {order.order.map(it => (
-                <div>
-                    <span>{it.time}</span>
+                <div style={{marginBottom:'20px',borderBottom:'1px solid #d0cdcd',padding:'10px'}}>
+                    <span>{this.getLocalTime(it.time)}</span>
+                    <span style={{
+                        display:'inline-block',
+                        float:'right',
+                        marginRight:'20px'
+                    }}>
+                    {this.changeStatus(it.status)}</span>
                     {it.goodsId.map(item => (
                          <ListItem key={item._id}
                                 style={{
@@ -67,11 +79,18 @@ class myOrders extends Component {
                                 }
                             />
                     ))}
-                    <span>fghfhghf{address.address.filter(item => it.addressId === item._id)[0].name}</span>
+                    {address.address.filter(item => it.addressId === item._id).map(it => (
+                        <div key={it._id}>
+                            <span style={{display:'inline-block', marginRight:'20px'}}>收货人：{it.name}</span>
+                            <span style={{display:'inline-block', marginRight:'20px'}}>电话：{it.tel}</span>
+                            <span>地址：{it.address}</span>
+                        </div>
+                    ))}
                 </div>
             ))}
             </List>
         </MuiThemeProvider>
+        </div>
       );
     } else {
         return null;
@@ -87,6 +106,5 @@ export default connect(
       address: state.address,
     }; },
     (dispatch) => { return {
-        getOrder: () => { dispatch(getOrder()); },
     }; }
   )(myOrders);
