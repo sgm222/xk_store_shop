@@ -1,6 +1,7 @@
 import {
     FETCHING_ADDRESS_SUCCESS,
-    FETCHING_ADDRESS_FAILURE
+    FETCHING_ADDRESS_FAILURE,
+    DEL_ADDRESS
 } from './constants';
 import { fetchAddress, fetchAddressById } from './api';
 
@@ -40,5 +41,34 @@ export const getAddressById = (id) => {
         ).catch(
             console.error('error')
         )
+};
+export const deleteById = (addressId) => {
+    return (dispatch, getState) => {
+        let body = {
+            "addressId": addressId
+        };
+        let url = "/api/address/delAddressById";
+        fetch(url, {
+            method: "post",
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'     //很重要，设置session,cookie可用
+        }).then(
+            (response) => {
+                return response.json();
+            }
+        ).then(
+            (json) => {
+                if(json.result.success) {
+                    dispatch({ type: DEL_ADDRESS, payload: addressId });
+                }
+            }
+        ).catch(
+            (ex) => {
+                console.error('parsing failed', ex);
+        }); 
+    }
 };
 

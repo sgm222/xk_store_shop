@@ -53,10 +53,11 @@ export const deleteById = (orderId) => {
         }); 
     }
 };
-export const modifyById = (orderId) => {
+export const modifyById = (orderId, status) => {
     return (dispatch, getState) => {
         let body = {
-            "orderId": orderId
+            "orderId": orderId,
+            "status": status
         };
         let url = "/api/order/modifyOrderById";
         fetch(url, {
@@ -77,12 +78,11 @@ export const modifyById = (orderId) => {
                         window.location = json.result.redirect;
                     }
                 } else if (json.error) {
-                    console.error('error', ex);
+                    console.error('error');
                 }
             }
         ).catch(
-            (ex) => {
-                console.error('parsing failed', ex);
-        }); 
+            console.error('parsing failed')
+        ); 
     }
 };

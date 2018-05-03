@@ -56,6 +56,21 @@ const addressAPI = (app) => {
         return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
       })
   });
+  app.post("/api/address/delAddressById", (req, res) => {
+    let addressModel = new AddressModel();
+    addressModel.deleteAddressById(req.body.addressId)
+    .then(
+        (model) => {
+            if(model.result.ok === 1){
+                return res.send(new ResponseUtil({success: true}, null));
+            } else {
+                return res.send(new ResponseUtil(null, {errorMsg: "删除失败"}));
+            }
+        }
+    ).catch((e) => {
+        console.error('error');
+    });
+});
 };
 
 module.exports = addressAPI;

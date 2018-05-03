@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import { getAddress } from './actions';
+import { getAddress, deleteById } from './actions';
 import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -10,28 +10,34 @@ import {List, ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import IconMenu from 'material-ui/IconMenu';
 import Drawer from 'material-ui/Drawer';
 import { Link } from 'react-router';
 import Button from 'Components/Button';
 import TextField from "material-ui/TextField";
-
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 let nameTF, telTF, addressTF;
 class myAddress extends Component {
   constructor(props) {
     super(props);
     this.state = {
         open: false,
+        delopen: false,
         name: '',
         tel: '',
         address: '',
         nameError: '',
         telError: '',
-        addressError: ''
+        addressError: '',
+        addressId: '',
     }
   }
   componentDidMount() {
     const {
-      getAddress
+      getAddress,
+      deleteById
     } = this.props;
     nameTF = this.refs.nameTF;
     telTF = this.refs.telTF;
@@ -39,8 +45,13 @@ class myAddress extends Component {
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
-
-  onAdd(addressId = '') {
+  handleOpen = () => {
+    this.setState({delopen: true});
+  };
+  handleClose = () => {
+    this.setState({delopen: false});
+  };
+  onAdd(addressId) {
     let nameStr = nameTF.getValue();
     let telStr = telTF.getValue();
     let addressStr = addressTF.getValue();  
@@ -99,9 +110,40 @@ class myAddress extends Component {
        console.error('error')
     )
 }
-
+    
   render() {
     const { address } = this.props;
+    const actions = [
+        <FlatButton
+          label="取消"
+          primary={true}
+          onClick={this.handleClose}
+        />,
+        <FlatButton
+          label="确定"
+          primary={true}
+          keyboardFocused={true}
+          onClick={()=> {
+            this.handleClose();
+            this.props.deleteById(this.state.addressId)
+          }}
+        />,
+      ];
+    const iconButtonElement = (
+        <IconButton
+          touch={true}
+          tooltip="more"
+          tooltipPosition="bottom-left"
+        >
+          <MoreVertIcon color={grey400} />
+        </IconButton>
+      );
+    const rightIconMenu = (
+        <IconMenu iconButtonElement={iconButtonElement}>
+          <MenuItem onClick={this.handleToggle}>编辑</MenuItem>
+          <MenuItem onClick={this.handleOpen}>删除</MenuItem>
+        </IconMenu>
+      );
     return(
         <div style={{
             width:'800px',
@@ -110,7 +152,16 @@ class myAddress extends Component {
         <MuiThemeProvider>
             <RaisedButton
             label="新增地址"
-            onClick={this.handleToggle}
+            onClick={() => {
+                this.setState({
+                    addressId: '',
+                    name: '',
+                    tel: '',
+                    address: ''
+                })
+                this.handleToggle()
+            }}
+            style={{marginBottom:'20px'}}
             />
         </MuiThemeProvider>
         <MuiThemeProvider>
@@ -162,10 +213,10 @@ class myAddress extends Component {
                                 }}
                                 id="addressTF"
                                 ref="addressTF"/> 
-                    <Button onClick={() => this.onAdd()}
+                    <Button onClick={() => this.onAdd(this.state.addressId)}
                                           primary={true}
                                           style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
-                    >添加</Button>}
+                    >添加</Button>
                 </div>
             </Drawer>
         </MuiThemeProvider>
@@ -189,11 +240,27 @@ class myAddress extends Component {
                         <span>{item.address}</span>
                     </div>
                   }
+                  onClick={() => this.setState({
+                      addressId: item._id,
+                      name: item.name,
+                      tel: item.tel,
+                      address: item.address
+                    })}
+                  rightIconButton={rightIconMenu}
                 />
               ))}
             </List>
           </MuiThemeProvider>
         }
+        <MuiThemeProvider>
+                <Dialog
+                  actions={actions}
+                  modal={false}
+                  open={this.state.delopen}
+                  >
+                  确定删除收货地址吗？
+                </Dialog>
+            </MuiThemeProvider>
       </div>
     )
   }
@@ -204,5 +271,6 @@ export default connect(
       address: state.address
     }; },
     (dispatch) => { return {
+        deleteById: (addressId) => {dispatch(deleteById(addressId))},
     }; }
   )(myAddress);

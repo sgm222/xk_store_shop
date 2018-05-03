@@ -9,15 +9,20 @@ import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import TextField from "material-ui/TextField";
 import { deleteById, modifyById } from '../Order/actions';
+let remarkTF;
 class Owner extends Component {
   constructor(props) {
     super(props);
     this.state = {
       _id: '',
       sureid: '',
+      remarkid: '',
+      goodsId: '',
       open: false,
-      sureopen: false
+      sureopen: false,
+      remarkopen: false
     };
   }
   componentDidMount() {
@@ -26,12 +31,19 @@ class Owner extends Component {
       deleteById,
       modifyById
     } = this.props;
+    remarkTF = this.refs.remarkTF;
   }
   handleOpen = (_id) => {
     this.setState({open: true, _id: _id});
   };
   sureOpen = (_id) => {
     this.setState({sureopen: true, sureid: _id});
+  };
+  remarkOpen = (_id, goodsId) => {
+    this.setState({remarkopen: true, remarkid: _id, goodsId: goodsId});
+  };
+  remarkClose = () => {
+    this.setState({remarkopen: false});
   };
   sureClose = () => {
     this.setState({sureopen: false});
@@ -54,6 +66,50 @@ class Owner extends Component {
         return '';
     }
   };
+  onRemark(goodsId, remarkStr) { 
+    let infoFinished = true;
+    if (remarkStr === "") {
+        this.setState({
+            nameError: "不能为空"
+        });
+        infoFinished = false;
+    }
+    if (!infoFinished) {
+        return;
+    }
+    let body = {
+        "goodsId": goodsId,
+        "remark": remarkStr,
+        "time": new Date().getTime()
+    }
+    let url = "/api/remark/submitRemark";
+    fetch(url, {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'     
+    }).then(
+        (response) => {
+            return response.json();
+        }
+    ).then(
+        (json) => {
+            if (json.result) {
+                let result=json.result;
+                if (result.redirect) {
+                    //window.location.href = result.redirect;
+                }
+                else {
+                    // this.setState({failureOpen: true})
+                }
+            }
+        }
+    ).catch(
+       console.error('error')
+    )
+  }
   render() {
     const actions = [
       <FlatButton
@@ -83,7 +139,24 @@ class Owner extends Component {
         keyboardFocused={true}
         onClick={()=> {
           this.sureClose();
-          this.props.modifyById(this.state.sureid)
+          this.props.modifyById(this.state.sureid, 2)
+        }}
+      />,
+    ];
+    const remarkactions = [
+      <FlatButton
+        label="取消"
+        primary={true}
+        onClick={this.remarkClose}
+      />,
+      <FlatButton
+        label="确定"
+        primary={true}
+        keyboardFocused={true}
+        onClick={()=> {
+          this.remarkClose();
+          this.onRemark(this.state.goodsId, this.state.remark)
+          this.props.modifyById(this.state.remarkid, 3)
         }}
       />,
     ];
@@ -227,9 +300,12 @@ class Owner extends Component {
                                 <span style={{
                                     display:'inline-block',
                                     float:'right',
-                                    marginRight:'20px'
+                                    marginRight:'20px',
+                                    marginTop:'-15px'
                                 }}>
-                                {this.changeStatus(it.status)}</span>
+                                  {this.changeStatus(it.status)}
+                                  <RaisedButton onClick={(e) => {this.remarkOpen(it._id, it.goodsId[0]._id)}} label="评价" style={{margin: '12px'}} />
+                                </span>
                                 {it.goodsId.map(item => (
                                     <ListItem key={item._id}
                                             style={{
@@ -282,6 +358,29 @@ class Owner extends Component {
                   确定收货请检查包裹完好
                 </Dialog>
             </MuiThemeProvider>
+            <MuiThemeProvider>
+                <Dialog
+                  actions={remarkactions}
+                  modal={false}
+                  open={this.state.remarkopen}
+                  >
+                  <div>评价：</div>
+                  <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
+                              errorText={this.state.remarkError}
+                              value={this.state.remark || ""}
+                              onChange={
+                                  (event, str) => {
+                                      this.setState({remark: str});
+                                      if (this.state.remarkError !== "") {
+                                          this.setState({
+                                            remarkError: ""
+                                          })
+                                      }
+                              }}
+                              id="remarkTF"
+                              ref="remarkTF"/> 
+                </Dialog>
+            </MuiThemeProvider>
       </div>
       );
     } else {
@@ -300,6 +399,6 @@ export default connect(
     }; },
     (dispatch) => { return {
       deleteById: (orderId) => {dispatch(deleteById(orderId))},
-      modifyById: (orderId) => {dispatch(modifyById(orderId))}
+      modifyById: (orderId, status) => {dispatch(modifyById(orderId, status))}
     }; }
   )(Owner);

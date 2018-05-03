@@ -8,6 +8,7 @@ import { goodsDetailReducer } from '../Views/Goods/detailreducers';
 import { cartReducer } from '../Views/Cart/reducers';
 import { addressReducer } from '../Views/Address/reducers';
 import { orderReducer } from '../Views/Order/reducers';
+import { remarkReducer } from '../Views/Remark/reducers';
 // root reducer for app
 const rootReducer = combineReducers({
   user: userReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   goodsDetail: goodsDetailReducer,
   cart: cartReducer,
   address: addressReducer,
-  order: orderReducer
+  order: orderReducer,
+  remark: remarkReducer
 });
 
 // dev tool extension

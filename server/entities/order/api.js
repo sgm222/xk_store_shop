@@ -48,7 +48,7 @@ const orderAPI = (app) => {
     app.post("/api/order/modifyOrderById", (req, res) => {
         let orderModel = new OrderModel();
           let data = {
-           status: 2
+           status: req.body.status
           }
           orderModel.findOrderAndUpdate(req.body.orderId, data)
           .then(

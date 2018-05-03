@@ -58,7 +58,7 @@ ul{ list-style: none; }
 }
 .goodsDetail{
     position: relative;
-    width: 90%;
+    width: 100%;
     height: 300px;
     border: 1px solid red;
     margin: 0 auto;

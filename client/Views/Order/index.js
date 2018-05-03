@@ -12,6 +12,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 import { getAddressById } from '../Address/actions';
 import { getGoodsId } from '../Goods/actions';
+import * as styles from './styles.css'
 let addressTF;
 class myOrders extends Component {
   constructor(props) {
@@ -31,6 +32,8 @@ class myOrders extends Component {
         return '待收货'
       case 2:
         return '待评价'
+      case 3:
+        return '以完成' 
       default:
         return '';
     }
@@ -43,12 +46,13 @@ class myOrders extends Component {
             width:'1100px',
             margin:'30px auto'
           }}>
+        <Link className={styles.link} to='/Owner'>管理订单</Link>
         <MuiThemeProvider>
         <List  style={{
             backgroundColor:'#eee',
             borderRadius:'2px',
             width:'600px',
-            margin:'50px auto',
+            margin:'20px auto',
             padding:'10px 30px'
         }}>
             {order.order.map(it => (

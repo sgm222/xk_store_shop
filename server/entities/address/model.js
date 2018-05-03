@@ -40,6 +40,10 @@ class AddressModel {
       let mongoUtil = new MongoUtil();
       return mongoUtil.findModelAndUpdateByKeyMap(modelName, addressSechma, id, data);
     }
+    deleteAddressById(_id) {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.deleteModelByKeyMap(modelName, addressSechma, {_id: _id});
+  }
 }
 
 module.exports = AddressModel;

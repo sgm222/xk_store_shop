@@ -13,6 +13,7 @@ const goodsAPI = require('./entities/goods/api');
 const cartAPI = require('./entities/cart/api');
 const addressAPI = require('./entities/address/api');
 const orderAPI = require('./entities/order/api');
+const remarkAPI = require('./entities/remark/api');
 /**
  * routes configurations
  */
@@ -44,6 +45,7 @@ const routesConfig = (app) => {
   cartAPI(app);
   addressAPI(app);
   orderAPI(app);
+  remarkAPI(app);
   // all get request will send index.html for react-router
   // to handle the route request
   app.get('*', (req, res) => {

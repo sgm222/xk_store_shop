@@ -1,6 +1,7 @@
 import {
     FETCHING_ADDRESS_SUCCESS,
-    FETCHING_ADDRESS_FAILURE
+    FETCHING_ADDRESS_FAILURE,
+    DEL_ADDRESS
   } from './constants';
   
   const initialState = {
@@ -23,6 +24,11 @@ import {
           fetchingAddress: false,
           error: 'Unable to fetch user profile. Please check out for correct username.',
         });
+      
+      case DEL_ADDRESS:
+        var id = state.address.indexOf(action.payload)
+        state.address.splice(id, 1)
+        return state;
 
       default:
         return state;
